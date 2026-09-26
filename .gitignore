@@ -1,0 +1,19 @@
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE files
+.vscode/
+.idea/
+
+# Virtual environments
+venv/
+env/
+.env
+
+# Generated benchmark output
+benchmark_report.json
+
+# If you don't want to track the synthesized test files
+synthetic_dataset/
+ground_truth.json
