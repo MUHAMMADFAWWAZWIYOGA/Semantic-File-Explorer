@@ -1,0 +1,82 @@
+[
+    {
+        "query": "armenian volunteers both from the caucasus",
+        "expected_path": "talk.politics.mideast/Source_Hassan_Arfa_The_Kurds_0.txt"
+    },
+    {
+        "query": "only when mirandized or some such",
+        "expected_path": "talk.politics.mideast/_1.txt"
+    },
+    {
+        "query": "field a reliable force in the",
+        "expected_path": "talk.politics.mideast/snip_In_the_first_place_3.txt"
+    },
+    {
+        "query": "press orbits for amateurs with a",
+        "expected_path": "sci.space/Archivename_spacemath_Lastmodified_Date_930401_5.txt"
+    },
+    {
+        "query": "you use do you sit under",
+        "expected_path": "sci.med/JB_JB_Ron_Roth_recommends_6.txt"
+    },
+    {
+        "query": "doesnt mean everything that comes out",
+        "expected_path": "talk.politics.mideast/You_apparently_think_you_are_7.txt"
+    },
+    {
+        "query": "even as i endorse clintons vie",
+        "expected_path": "talk.politics.mideast/It_seems_that_President_Clinton_8.txt"
+    },
+    {
+        "query": "both have higher population densities there",
+        "expected_path": "talk.politics.mideast/Other_people_have_commented_on_9.txt"
+    },
+    {
+        "query": "a larger economy nations will have",
+        "expected_path": "sci.space/If_I_read_you_right_10.txt"
+    },
+    {
+        "query": "picture there is tremendous bias in",
+        "expected_path": "talk.politics.mideast/As_someone_who_reads_Israeli_11.txt"
+    },
+    {
+        "query": "and virtual reality systems vast amounts",
+        "expected_path": "comp.graphics/NYC_ACMSIGGRAPH_UNDERSTANDING_IMAGES_12.txt"
+    },
+    {
+        "query": "you cant win em all then",
+        "expected_path": "sci.space/stuff_deleted_You_mean_like_13.txt"
+    },
+    {
+        "query": "days it is scheduled to come",
+        "expected_path": "sci.space/COMET_Commercial_Experiment_Transport_is_14.txt"
+    },
+    {
+        "query": "exploration and development of space and",
+        "expected_path": "sci.space/Archivename_spacenet_Lastmodified_Date_930401_15.txt"
+    },
+    {
+        "query": "on bellcorecom that doesnt work under",
+        "expected_path": "comp.graphics/Hi_all_I_am_looking_17.txt"
+    },
+    {
+        "query": "die alten foltern jetzt an andere",
+        "expected_path": "talk.politics.mideast/From_Center_for_Policy_Research_18.txt"
+    },
+    {
+        "query": "peoples access to jobs or public",
+        "expected_path": "talk.politics.mideast/Im_not_aware_that_the_20.txt"
+    },
+    {
+        "query": "and the polygon is even then",
+        "expected_path": "comp.graphics/Basically_there_are_two_algorithms_21.txt"
+    },
+    {
+        "query": "volume they add to the phase",
+        "expected_path": "sci.space/My_poor_old_physics_intuition_23.txt"
+    },
+    {
+        "query": "  gordon banks n3jxp ",
+        "expected_path": "sci.med/Extremely_rare_in_humans_Usually_25.txt"
+    }
+]
