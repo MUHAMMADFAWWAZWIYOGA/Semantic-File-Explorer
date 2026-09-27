@@ -1,0 +1,22 @@
+[
+    {
+        "query": "laporan keuangan Q3 yang sudah direvisi",
+        "expected_path": "finance/Q3_report_FINAL.docx"
+    },
+    {
+        "query": "file presentasi klien A versi final",
+        "expected_path": "clients/client_A_presentation.md"
+    },
+    {
+        "query": "catatan meeting client B",
+        "expected_path": "clients/client_B_notes.txt"
+    },
+    {
+        "query": "draf laporan keuangan kuartal 4",
+        "expected_path": "finance/Q4_report_draft.txt"
+    },
+    {
+        "query": "berapa biaya server untuk budget 2027",
+        "expected_path": "finance/budget_2027.csv"
+    }
+]
