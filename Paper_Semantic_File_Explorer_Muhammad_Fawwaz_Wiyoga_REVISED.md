@@ -51,12 +51,37 @@ The Knowledge Intensive Language Tasks (KILT) benchmark emphasizes a strict sepa
 
 This study adopts an experimental computer science methodology to design, implement, and evaluate the Semantic File Explorer. The research stages are systematically divided into four phases: Dataset Synthesis, Incremental Indexing (Training Phase), System Architecture Design (Agentic Retrieval), and Evaluation Benchmarking.
 
-### A. Dataset Synthesis and Ground Truth Formulation
+### A. High-Level System Architecture Overview
+The system acts as a middleware bridge between the user's natural language queries and the raw local filesystem. The architecture is modularly separated into an offline indexing engine and a real-time retrieval agent.
+
+```mermaid
+flowchart TD
+    User([User Query]) --> Agent[Agentic Retrieval Pipeline]
+    
+    subgraph Semantic File Explorer [System Core]
+        Agent --> |Cosine Similarity Search| VectorEngine[Mathematical Vector Engine]
+        VectorEngine <--> |Loads Weights| Cache[(semantic_index.json)]
+        Agent --> |Triggers if Threshold > 0.05| Verifier[Evidence Verifier Module]
+        Agent --> |Triggers if Match Fails| OS_API[ReAct Fallback: tool_list_dir]
+    end
+    
+    subgraph Local Environment [Local Filesystem]
+        Watchdog[Incremental Watchdog Indexer] --> |Monitors st_mtime| Storage[(Local Hard Drive)]
+        Storage --> |TXT, MD, DOCX, CSV| Watchdog
+        Watchdog --> |Writes Updates| Cache
+    end
+    
+    Verifier --> |Strict String Matching| Storage
+    Verifier --> |Zero-Hallucination Path| Output([Verified Result])
+```
+*Figure 1. High-Level System Architecture of the Semantic File Explorer.*
+
+### B. Dataset Synthesis and Ground Truth Formulation
 Since public datasets for local heterogeneous file systems containing semantic noise are practically non-existent due to privacy constraints, a synthetic corpus was procedurally generated using Python. The dataset consists of multi-format documents (TXT, MD, CSV, DOCX) structured across simulated organizational directories (e.g., Finance, Clients, Archive). 
 
 To rigorously test the agent's semantic reasoning, "semantic noise" was intentionally injected into the dataset. This was achieved by creating obsolete drafts, empty files, and duplicate records alongside final versions (e.g., `Q3_report_v1.txt` vs. `Q3_report_FINAL.docx`). Five natural language queries were predefined and strictly mapped to their absolute target paths to formulate a Ground Truth index, completely preventing evaluation bias during the testing phase.
 
-### B. Incremental Watchdog Indexing (Training Phase)
+### C. Incremental Watchdog Indexing (Training Phase)
 To ensure scalability across large file systems (e.g., 10,000+ files) without degrading system performance, an incremental indexing strategy was utilized. Exhaustive directory scanning is an $O(N)$ Disk I/O operation which causes severe bottlenecks. 
 
 The training phase parses multi-format files and caches them based on OS-level modification timestamps (`st_mtime`). During initialization, the system compares the current timestamp of a file against the JSON cache. 
@@ -73,9 +98,9 @@ flowchart TD
     Cache --> Vectorize
     Vectorize --> Save[Update semantic_index.json]
 ```
-*Figure 1. Flowchart of the Incremental Watchdog Indexing process minimizing Disk I/O.*
+*Figure 2. Flowchart of the Incremental Watchdog Indexing process minimizing Disk I/O.*
 
-### C. System Architecture: Mathematical Vector Engine
+### D. System Architecture: Mathematical Vector Engine
 The core of the meaning-aware retrieval is built upon a mathematical vector engine. Text extracted from files is normalized, tokenized, and stripped of non-alphanumeric characters. 
 
 The Term Frequency (TF) for a term $t$ in document $d$ is calculated as the raw count of the term divided by the total length of the document to prevent bias towards longer files. The Inverse Document Frequency (IDF) is calculated as:
@@ -84,7 +109,7 @@ $$ IDF(t, D) = \log \left( \frac{N}{df_t} \right) $$
 
 where $N$ is the total number of indexed documents and $df_t$ is the document frequency of term $t$. The final vector representation for each document is the product of its TF and IDF weights. 
 
-### D. System Architecture: Agentic Retrieval and Verification
+### E. System Architecture: Agentic Retrieval and Verification
 When a user submits a natural language query, the system vectorizes the query using the global IDF weights. The similarity between the query vector $\vec{q}$ and each document vector $\vec{d}$ is computed using Cosine Similarity:
 
 $$ \text{Cosine Sim}(\vec{q}, \vec{d}) = \frac{\vec{q} \cdot \vec{d}}{\|\vec{q}\| \|\vec{d}\|} $$
@@ -102,11 +127,11 @@ flowchart LR
     C -->|No| R
     C -->|Yes| Out[Verified Result + High Confidence]
 ```
-*Figure 2. Agentic ReAct Loop and Evidence Verification Architecture ensuring Zero-Hallucination.*
+*Figure 3. Agentic ReAct Loop and Evidence Verification Architecture ensuring Zero-Hallucination.*
 
 Furthermore, a Sandbox Safety module is implemented at the tool level. Before any path is read, the absolute path is resolved and checked against the root directory prefix, completely neutralizing malicious directory traversal attacks (e.g., `../../../etc/shadow`).
 
-### E. Evaluation Scenario and Metrics
+### F. Evaluation Scenario and Metrics
 The proposed Semantic File Explorer model was benchmarked against a traditional Keyword Match baseline across the predefined Ground Truth corpus. Three critical metrics were utilized:
 1. **Precision@1**: The percentage of top-ranked predicted paths exactly matching the Ground Truth labels.
 2. **Evidence Faithfulness**: The percentage of results providing both the correct path and a strictly validated quote from the document. A score of 100% represents an absolute zero-hallucination guarantee.
