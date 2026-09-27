@@ -155,7 +155,15 @@ The algorithmic leap provided by Scikit-Learn's matrix calculation resulted in a
 
 ## V. LIMITATIONS AND FUTURE WORK
 
-While the Semantic File Explorer successfully mitigates semantic blindness and hallucination, limitations remain. The current text extraction is limited to native encodings (TXT, MD, CSV, DOCX). The agent is entirely blind to scanned documents (Images) and non-selectable PDFs. Second, the lexical tokenizer struggles with complex multi-lingual characters. Future work will focus on integrating quantized Vision-Language Models (VLMs) or Optical Character Recognition (OCR) engines directly into the Incremental Indexing pipeline. Additionally, mapping the file system into an autonomous Knowledge Graph will significantly enhance reasoning.
+While the Semantic File Explorer successfully mitigates semantic blindness and hallucination, this architecture represents only the foundational layer of fully autonomous local retrieval. Several limitations dictate a robust roadmap for future architectural evolution. 
+
+First, the current Incremental Indexing pipeline relies on native text encodings (TXT, MD, CSV, DOCX), rendering the agent entirely blind to scanned documents and non-selectable PDFs. Second, while Scikit-Learn TF-IDF effectively models sublinear term frequencies, it remains a sparse vector architecture.
+
+To achieve state-of-the-art (SOTA) enterprise retrieval, future work will pivot towards four massive architectural upgrades:
+1. **Massive-Scale Corpus Testing:** Transitioning from the 500-document 20 Newsgroups subset to the Enron Email Corpus (500,000+ files) to aggressively stress-test the $O(1)$ watchdog cache limits.
+2. **Hybrid Dense-Sparse Retrieval:** Replacing standard TF-IDF with a dual-encoder architecture combining Lexical Search (BM25) with Dense Transformer Embeddings (e.g., MiniLM), stored in a high-performance vector database (FAISS) capable of sub-millisecond retrieval.
+3. **GraphRAG and Relational Provenance:** Mapping the local file system into a Knowledge Graph (Neo4j). This allows the agent to intrinsically understand relational provenance (e.g., detecting that `Report_v2.docx` supersedes `Draft_v1.docx` based on node edges rather than just textual similarity).
+4. **Quantized Local LLM Agents:** Evolving the ReAct loop from algorithmic thresholding to utilizing a fully localized, quantized LLM (e.g., LLaMA-3 8B GGUF). This permits true autonomous reasoning, where the agent reads the retrieved chunks and logically determines context sufficiency before returning the final path, without ever exposing data to cloud endpoints.
 
 ---
 
